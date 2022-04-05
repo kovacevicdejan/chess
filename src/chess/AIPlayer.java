@@ -1,7 +1,10 @@
 package chess;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class AIPlayer extends Player {
@@ -202,6 +205,20 @@ public class AIPlayer extends Player {
 			owner.setGameState(Chess.GameState.WIN);
 			owner.stopGame();
 			return;
+		}
+
+		try {
+			String soundName = "D:/ETF/chess/src/sounds/move_sound.wav";
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
 		}
 
 		move.getFigure().moveFigure(move.getNewField().getRow(), move.getNewField().getColumn());

@@ -38,10 +38,16 @@ public class Knight extends Figure {
 			dy = dy * 2;
 		
         while(y != new_y) {
-        	x += dx;
-            y += dy;
+        	x += dx * 2;
+            y += dy * 2;
+
+			if((dy > 0 && y > new_y) || (dy < 0 && y < new_y)) {
+				y = new_y;
+				x = new_x;
+			}
+
             board.repaint();
-            Thread.sleep(2);
+            Thread.sleep(1);
         }
 	}
 
