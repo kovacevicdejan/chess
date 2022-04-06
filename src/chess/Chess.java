@@ -73,6 +73,7 @@ class Chess extends JFrame implements Runnable {
                 Chess.this.game_info.setComputerClock(900);
                 Chess.this.game_info.setPlayerClockColor(Color.ORANGE);
                 Chess.this.game_info.setComputerClockColor(Color.GRAY);
+                Chess.this.last_move = new Move();
                 startGame();
             });
 
