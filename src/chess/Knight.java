@@ -47,7 +47,7 @@ public class Knight extends Figure {
 			}
 
             board.repaint();
-            Thread.sleep(1);
+            Thread.sleep(5);
         }
 	}
 
