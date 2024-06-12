@@ -114,7 +114,7 @@ public class UserPlayer extends Player {
 
 	public void makeMove(Move move) {
 		try {
-			String soundName = "D:/ETF/chess/src/sounds/move_sound.wav";
+			String soundName = "src/sounds/move_sound.wav";
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
 			Clip clip = AudioSystem.getClip();
 			clip.open(audioInputStream);

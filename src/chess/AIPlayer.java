@@ -208,7 +208,7 @@ public class AIPlayer extends Player {
 		}
 
 		try {
-			String soundName = "D:/ETF/chess/src/sounds/move_sound.wav";
+			String soundName = "src/sounds/move_sound.wav";
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
 			Clip clip = AudioSystem.getClip();
 			clip.open(audioInputStream);
