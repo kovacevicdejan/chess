@@ -20,6 +20,8 @@ class Chess extends JFrame implements Runnable {
     private GameInfo game_info;
     private Move last_move = new Move();
     private int move_number = 0;
+    private int duration = 900;
+    private int increment = 10;
 
     class ResultDialog extends Dialog {
 
@@ -50,12 +52,43 @@ class Chess extends JFrame implements Runnable {
             label.setHorizontalAlignment(SwingConstants.CENTER);
             label.setVerticalAlignment(SwingConstants.CENTER);
 
-            JPanel north_panel = new JPanel(new BorderLayout());
-            north_panel.setBackground(Color.DARK_GRAY);
-            north_panel.add(label);
+            JLabel label1 = new JLabel("Set game format");
+            label1.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
+            label1.setForeground(Color.ORANGE);
 
-            JPanel south_panel = new JPanel(new GridLayout(1, 2));
-            south_panel.setBackground(Color.DARK_GRAY);
+            String[] options = {"10 + 0", "10 + 5", "15 + 10"};
+            JComboBox<String> dropdown = new JComboBox<>(options);
+
+            dropdown.addActionListener(e -> {
+                String selectedItem = (String) dropdown.getSelectedItem();
+
+                switch (selectedItem) {
+                    case "10 + 0":
+                        Chess.this.duration = 600;
+                        Chess.this.increment = 0;
+                        break;
+                    case "10 + 5":
+                        Chess.this.duration = 600;
+                        Chess.this.increment = 5;
+                        break;
+                    case "15 + 10":
+                        Chess.this.duration = 900;
+                        Chess.this.increment = 10;
+                        break;
+                }
+            });
+
+            JPanel top_panel = new JPanel(new BorderLayout());
+            top_panel.setBackground(Color.DARK_GRAY);
+            top_panel.add(label);
+
+            JPanel middle_panel = new JPanel(new GridLayout(1, 2, 20, 20));
+            middle_panel.setBackground(Color.DARK_GRAY);
+            middle_panel.add(label1);
+            middle_panel.add(dropdown);
+
+            JPanel bottom_panel = new JPanel(new GridLayout(1, 2));
+            bottom_panel.setBackground(Color.DARK_GRAY);
 
             JButton new_game = new JButton();
             new_game.setText("New Game");
@@ -69,8 +102,8 @@ class Chess extends JFrame implements Runnable {
                 game_info.clear(player, computer);
                 Chess.this.move_number = 0;
                 Chess.this.game_info.clearMoves();
-                Chess.this.game_info.setPlayerClock(900);
-                Chess.this.game_info.setComputerClock(900);
+                Chess.this.game_info.setPlayerClock(duration);
+                Chess.this.game_info.setComputerClock(duration);
                 Chess.this.game_info.setPlayerClockColor(Color.ORANGE);
                 Chess.this.game_info.setComputerClockColor(Color.GRAY);
                 Chess.this.last_move = new Move();
@@ -92,13 +125,14 @@ class Chess extends JFrame implements Runnable {
             right_panel.setBackground(Color.DARK_GRAY);
             right_panel.add(exit);
 
-            south_panel.add(left_panel);
-            south_panel.add(right_panel);
+            bottom_panel.add(left_panel);
+            bottom_panel.add(right_panel);
 
-            JPanel panel = new JPanel(new GridLayout(2, 1));
+            JPanel panel = new JPanel(new GridLayout(3, 1));
             panel.setBackground(Color.DARK_GRAY);
-            panel.add(north_panel);
-            panel.add(south_panel);
+            panel.add(top_panel);
+            panel.add(middle_panel);
+            panel.add(bottom_panel);
             add(panel);
 
             this.addWindowListener(new WindowAdapter() {
@@ -141,7 +175,7 @@ class Chess extends JFrame implements Runnable {
         south_panel.setPreferredSize(new Dimension(450, 50));
         south_panel.setBackground(Color.DARK_GRAY);
         south_panel.setLayout(new BorderLayout());
-        Settings settings = new Settings();
+//        Settings settings = new Settings(this);
         JPanel letters = new JPanel();
         letters.setLayout(new GridLayout(1, 8, 0, 0));
         letters.setPreferredSize(new Dimension(400, 50));
@@ -163,8 +197,13 @@ class Chess extends JFrame implements Runnable {
         JPanel empty_panel = new JPanel();
         empty_panel.setBackground(Color.DARK_GRAY);
         empty_panel.setPreferredSize(new Dimension(400, 50));
+
+        JPanel first_panel = new JPanel();
+        first_panel.setBackground(Color.DARK_GRAY);
+        first_panel.setPreferredSize(new Dimension(50, 50));
         
-        south_panel.add(settings, BorderLayout.WEST);
+//        south_panel.add(settings, BorderLayout.WEST);
+        south_panel.add(first_panel, BorderLayout.WEST);
         south_panel.add(letters, BorderLayout.CENTER);
         south_panel.add(empty_panel, BorderLayout.EAST);
         add(south_panel, BorderLayout.SOUTH);
@@ -203,12 +242,36 @@ class Chess extends JFrame implements Runnable {
 		return player;
 	}
 
+    public void setPlayer(UserPlayer player) {
+        this.player = player;
+    }
+
 	public AIPlayer getComputer() {
 		return computer;
 	}
 
+    public void setComputer(AIPlayer computer) {
+        this.computer = computer;
+    }
+
     public Player getCurrentPlayer() {
         return current_player;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public int getIncrement() {
+        return increment;
+    }
+
+    public void setIncrement(int increment) {
+        this.increment = increment;
     }
 
     public void setCurrentPlayer(Player player) {
@@ -223,7 +286,7 @@ class Chess extends JFrame implements Runnable {
             game_info.setComputerClockColor(Color.GRAY);
 
             if(move_number > 2) {
-                this.computer.setTime(this.computer.getTime() + 10);
+                this.computer.setTime(this.computer.getTime() + increment);
                 game_info.setComputerClock(this.computer.getTime());
             }
         }
@@ -236,7 +299,7 @@ class Chess extends JFrame implements Runnable {
             game_info.setPlayerClockColor(Color.GRAY);
 
             if(move_number > 2) {
-                this.player.setTime(this.player.getTime() + 10);
+                this.player.setTime(this.player.getTime() + increment);
                 game_info.setPlayerClock(this.player.getTime());
             }
         }

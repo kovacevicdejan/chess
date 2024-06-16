@@ -10,13 +10,14 @@ public abstract class Player {
 	protected King king = null;
 	protected ArrayList<Figure> eaten_figures;
 	protected int[] eaten_figures_num = {0, 0, 0, 0, 0};
-	protected int time = 900;
+	protected int time;
 
 	public Player(Chess owner, char color) {
 		this.owner = owner;
 		this.figures = new ArrayList<>();
 		this.setFigures(color);
 		this.eaten_figures = new ArrayList<>();
+		this.time = owner.getDuration();
 	}
 
 	public ArrayList<Figure> getFigures() {
